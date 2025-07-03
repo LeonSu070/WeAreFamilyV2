@@ -1,7 +1,33 @@
 fetch('/family')
   .then(res => res.json())
-  .then(data => drawTree(data))
+  .then(list => drawTree(buildHierarchy(list)))
   .catch(err => console.error(err));
+
+function buildHierarchy(list) {
+  const idMap = new Map();
+  list.forEach(member => {
+    member.name = `${member.first_name}${member.last_name}`;
+    member.children = [];
+    idMap.set(member.id, member);
+  });
+
+  const root = { name: 'Family Tree', children: [] };
+  list.forEach(member => {
+    if (member.parent_id && idMap.has(member.parent_id)) {
+      idMap.get(member.parent_id).children.push(member);
+    } else {
+      root.children.push(member);
+    }
+  });
+
+  list.forEach(member => {
+    if (member.children.length === 0) {
+      delete member.children;
+    }
+  });
+
+  return root;
+}
 
 function drawTree(data) {
   const width = 600;
