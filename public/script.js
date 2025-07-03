@@ -43,7 +43,7 @@ function drawTree(data) {
   const rectHeight = 20;
   const tree = d3.tree()
     .nodeSize([dx, dy])
-    .separation((a, b) => (a.parent === b.parent ? 1.5 : 2.5));
+    .separation((a, b) => (a.parent === b.parent ? 2 : 3));
   const diagonal = d3.linkVertical().x(d => d.x).y(d => d.y);
 
   const root = d3.hierarchy(data);
@@ -75,7 +75,10 @@ function drawTree(data) {
 
     const width = right.x - left.x + margin.left + margin.right + rectWidth;
     const height = bottom.y - top.y + margin.top + margin.bottom + rectHeight;
-    svg.attr('viewBox', [0, 0, width, height]);
+    svg
+      .attr('viewBox', [0, 0, width, height])
+      .attr('width', width)
+      .attr('height', height);
 
     const offsetX = margin.left + (width - margin.left - margin.right) / 2 - root.x;
     g.attr('transform', `translate(${offsetX},${margin.top})`);
