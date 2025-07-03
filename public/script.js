@@ -33,58 +33,118 @@ function buildHierarchies(list) {
 }
 
 function drawTree(data) {
-  const width = 600;
-  const dx = 10;
-  const dy = 100;
-  const tree = d3.tree().nodeSize([dy, dx]);
-  const diagonal = d3.linkVertical().x(d => d.x).y(d => d.y);
+  const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+  const dx = 40;
+  const dy = 120;
+  const rectWidth = 80;
+  const rectHeight = 20;
+  const tree = d3.tree().nodeSize([dx, dy]);
+  const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
 
   const root = d3.hierarchy(data);
   root.x0 = 0;
-  root.y0 = dx / 2;
-  tree(root);
+  root.y0 = 0;
 
-  let x0 = Infinity;
-  let x1 = -x0;
-  root.each(d => {
-    if (d.x > x1) x1 = d.x;
-    if (d.x < x0) x0 = d.x;
+  root.descendants().forEach((d, i) => {
+    d.id = i;
+    d._children = d.children;
   });
 
   const svg = d3.select('#chart').append('svg')
-      .attr('viewBox', [0, 0, width, x1 - x0 + dx * 2])
-      .style('font', '10px sans-serif')
-      .style('user-select', 'none')
-      .style('margin-bottom', '20px');
+    .style('font', '10px sans-serif')
+    .style('user-select', 'none')
+    .style('margin-bottom', '20px');
 
   const g = svg.append('g')
-      .attr('transform', `translate(${width / 2},${dy - x0})`);
+    .attr('transform', `translate(${margin.left},${margin.top})`);
 
-  const link = g.append('g')
-      .attr('fill', 'none')
-      .attr('stroke', '#555')
-      .attr('stroke-opacity', 0.4)
-      .attr('stroke-width', 1.5)
-    .selectAll('path')
-    .data(root.links())
-    .join('path')
-      .attr('d', diagonal);
+  function update(source) {
+    tree(root);
 
-  const node = g.append('g')
-    .selectAll('g')
-    .data(root.descendants())
-    .join('g')
-      .attr('transform', d => `translate(${d.x},${d.y})`);
+    let left = root, right = root, top = root, bottom = root;
+    root.each(d => {
+      if (d.x < left.x) left = d;
+      if (d.x > right.x) right = d;
+      if (d.y < top.y) top = d;
+      if (d.y > bottom.y) bottom = d;
+    });
 
-  node.append('circle')
-      .attr('fill', d => d.children ? '#555' : '#999')
-      .attr('r', 4.5);
+    const width = bottom.y - top.y + margin.left + margin.right + rectWidth;
+    const height = right.x - left.x + margin.top + margin.bottom + rectHeight;
+    svg.attr('viewBox', [0, 0, width, height]);
 
-  node.append('text')
+    const nodes = root.descendants().reverse();
+    const links = root.links();
+
+    const link = g.selectAll('path.link')
+      .data(links, d => d.target.id);
+
+    link.join(
+      enter => enter.append('path')
+          .attr('class', 'link')
+          .attr('stroke', '#555')
+          .attr('stroke-opacity', 0.4)
+          .attr('fill', 'none')
+          .attr('stroke-width', 1.5)
+          .attr('d', () => {
+            const o = { x: source.x0, y: source.y0 };
+            return diagonal({ source: o, target: o });
+          })
+          .transition().duration(250)
+          .attr('d', d => diagonal({ source: d.source, target: d.target })),
+      update => update.transition().duration(250)
+          .attr('d', d => diagonal({ source: d.source, target: d.target })),
+      exit => exit.transition().duration(250)
+          .attr('d', () => {
+            const o = { x: source.x, y: source.y };
+            return diagonal({ source: o, target: o });
+          })
+          .remove()
+    );
+
+    const node = g.selectAll('g.node')
+      .data(nodes, d => d.id);
+
+    const nodeEnter = node.enter().append('g')
+      .attr('class', 'node')
+      .attr('transform', () => `translate(${source.y0},${source.x0})`)
+      .style('cursor', 'pointer')
+      .on('click', (event, d) => {
+        if (d.children) {
+          d._children = d.children;
+          d.children = null;
+        } else {
+          d.children = d._children;
+          d._children = null;
+        }
+        update(d);
+      });
+
+    nodeEnter.append('rect')
+      .attr('x', -rectWidth / 2)
+      .attr('y', -rectHeight / 2)
+      .attr('width', rectWidth)
+      .attr('height', rectHeight)
+      .attr('fill', '#fff')
+      .attr('stroke', 'steelblue');
+
+    nodeEnter.append('text')
       .attr('dy', '0.31em')
-      .attr('x', d => d.children ? -6 : 6)
-      .attr('text-anchor', d => d.children ? 'end' : 'start')
-      .text(d => d.data.name)
-    .clone(true).lower()
-      .attr('stroke', 'white');
+      .attr('text-anchor', 'middle')
+      .text(d => d.data.name);
+
+    node.merge(nodeEnter).transition().duration(250)
+      .attr('transform', d => `translate(${d.y},${d.x})`);
+
+    node.exit().transition().duration(250)
+      .attr('transform', () => `translate(${source.y},${source.x})`)
+      .remove();
+
+    root.each(d => {
+      d.x0 = d.x;
+      d.y0 = d.y;
+    });
+  }
+
+  update(root);
 }
