@@ -42,7 +42,7 @@ function drawTree(data) {
   const rectWidth = 80;
   const rectHeight = 20;
   const tree = d3.tree().nodeSize([dx, dy]);
-  const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
+  const diagonal = d3.linkVertical().x(d => d.x).y(d => d.y);
 
   const root = d3.hierarchy(data);
   root.x0 = 0;
@@ -72,8 +72,8 @@ function drawTree(data) {
       if (d.y > bottom.y) bottom = d;
     });
 
-    const width = bottom.y - top.y + margin.left + margin.right + rectWidth;
-    const height = right.x - left.x + margin.top + margin.bottom + rectHeight;
+    const width = right.x - left.x + margin.left + margin.right + rectWidth;
+    const height = bottom.y - top.y + margin.top + margin.bottom + rectHeight;
     svg.attr('viewBox', [0, 0, width, height]);
 
     const nodes = root.descendants().reverse();
@@ -110,7 +110,7 @@ function drawTree(data) {
 
     const nodeEnter = node.enter().append('g')
       .attr('class', 'node')
-      .attr('transform', () => `translate(${source.y0},${source.x0})`)
+      .attr('transform', () => `translate(${source.x0},${source.y0})`)
       .style('cursor', 'pointer')
       .on('click', (event, d) => {
         if (d.children) {
@@ -137,10 +137,10 @@ function drawTree(data) {
       .text(d => d.data.name);
 
     node.merge(nodeEnter).transition().duration(250)
-      .attr('transform', d => `translate(${d.y},${d.x})`);
+      .attr('transform', d => `translate(${d.x},${d.y})`);
 
     node.exit().transition().duration(250)
-      .attr('transform', () => `translate(${source.y},${source.x})`)
+      .attr('transform', () => `translate(${source.x},${source.y})`)
       .remove();
 
     root.each(d => {
