@@ -16,3 +16,7 @@ npm start
 
 The application will be available at `http://localhost:3000`.
 
+The `data/family.json` file now includes a `root` field specifying the ID of the
+family member used as the single root node of the displayed tree. Only that
+tree is rendered on the page.
+
