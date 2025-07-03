@@ -1,9 +1,12 @@
 fetch('/family')
   .then(res => res.json())
-  .then(list => drawTree(buildHierarchy(list)))
+  .then(list => {
+    const roots = buildHierarchies(list);
+    roots.forEach(root => drawTree(root));
+  })
   .catch(err => console.error(err));
 
-function buildHierarchy(list) {
+function buildHierarchies(list) {
   const idMap = new Map();
   list.forEach(member => {
     member.name = `${member.first_name}${member.last_name}`;
@@ -11,12 +14,12 @@ function buildHierarchy(list) {
     idMap.set(member.id, member);
   });
 
-  const root = { name: 'Family Tree', children: [] };
+  const roots = [];
   list.forEach(member => {
     if (member.parent_id && idMap.has(member.parent_id)) {
       idMap.get(member.parent_id).children.push(member);
     } else {
-      root.children.push(member);
+      roots.push(member);
     }
   });
 
@@ -26,19 +29,19 @@ function buildHierarchy(list) {
     }
   });
 
-  return root;
+  return roots;
 }
 
 function drawTree(data) {
   const width = 600;
   const dx = 10;
   const dy = 100;
-  const tree = d3.tree().nodeSize([dx, dy]);
-  const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
+  const tree = d3.tree().nodeSize([dy, dx]);
+  const diagonal = d3.linkVertical().x(d => d.x).y(d => d.y);
 
   const root = d3.hierarchy(data);
-  root.x0 = dy / 2;
-  root.y0 = 0;
+  root.x0 = 0;
+  root.y0 = dx / 2;
   tree(root);
 
   let x0 = Infinity;
@@ -51,10 +54,11 @@ function drawTree(data) {
   const svg = d3.select('#chart').append('svg')
       .attr('viewBox', [0, 0, width, x1 - x0 + dx * 2])
       .style('font', '10px sans-serif')
-      .style('user-select', 'none');
+      .style('user-select', 'none')
+      .style('margin-bottom', '20px');
 
   const g = svg.append('g')
-      .attr('transform', `translate(${dy / 3},${dx - x0})`);
+      .attr('transform', `translate(${width / 2},${dy - x0})`);
 
   const link = g.append('g')
       .attr('fill', 'none')
@@ -70,7 +74,7 @@ function drawTree(data) {
     .selectAll('g')
     .data(root.descendants())
     .join('g')
-      .attr('transform', d => `translate(${d.y},${d.x})`);
+      .attr('transform', d => `translate(${d.x},${d.y})`);
 
   node.append('circle')
       .attr('fill', d => d.children ? '#555' : '#999')
