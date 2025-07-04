@@ -55,14 +55,18 @@ function buildHierarchy(data) {
 
 function drawTree(data) {
   const margin = { top: 20, right: 20, bottom: 20, left: 20 };
-  const dx = 40;
-  const dy = 120;
   const rectWidth = 80;
   const rectHeight = 20;
   const spouseGap = 10;
+  // Use a horizontal spacing that accounts for the maximum width of a
+  // node with a spouse so siblings don't overlap.
+  const dx = rectWidth * 2 + spouseGap + 20;
+  const dy = 120;
   const tree = d3.tree()
     .nodeSize([dx, dy])
-    .separation((a, b) => (a.parent === b.parent ? 2 : 3));
+    // Keep spouses close together while ensuring siblings are spaced
+    // apart so their boxes do not touch.
+    .separation((a, b) => (a.parent === b.parent ? 1 : 2));
   const diagonal = d3.linkVertical().x(d => d.x).y(d => d.y);
 
   const root = d3.hierarchy(data);
