@@ -169,7 +169,7 @@ function drawTree(data) {
 
     const spouseEnter = nodeEnter.filter(d => d.data.spouse).append('g')
       .attr('class', 'spouse')
-      .attr('transform', `translate(${rectWidth / 2 + spouseGap},0)`);
+      .attr('transform', `translate(${rectWidth + spouseGap},0)`);
 
     spouseEnter.append('rect')
       .attr('x', -rectWidth / 2)
