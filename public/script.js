@@ -55,8 +55,8 @@ function buildHierarchy(data) {
 
 function drawTree(data) {
   const margin = { top: 20, right: 20, bottom: 20, left: 20 };
-  const rectWidth = 80;
-  const rectHeight = 20;
+  const rectWidth = 120; // increased for larger nodes
+  const rectHeight = 30; // increased for larger nodes
   const spouseGap = 10;
   // Use a horizontal spacing that accounts for the maximum width of a
   // node with a spouse so siblings don't overlap.
@@ -79,7 +79,8 @@ function drawTree(data) {
   });
 
   const svg = d3.select('#chart').append('svg')
-    .style('font', '10px sans-serif')
+    // slightly larger font to match bigger nodes
+    .style('font', '14px sans-serif')
     .style('user-select', 'none')
     .style('margin-bottom', '20px');
 
