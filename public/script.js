@@ -24,6 +24,24 @@ function buildHierarchy(data) {
     }
   });
 
+  // link spouses and share children
+  list.forEach(member => {
+    if (member.spouse_id && idMap.has(member.spouse_id)) {
+      member.spouse = idMap.get(member.spouse_id);
+    }
+  });
+
+  list.forEach(member => {
+    if (member.spouse) {
+      const combined = Array.from(new Set([
+        ...(member.children || []),
+        ...(member.spouse.children || [])
+      ]));
+      member.children = combined;
+      member.spouse.children = combined;
+    }
+  });
+
   const rootMember = idMap.get(rootId);
 
   list.forEach(member => {
@@ -41,6 +59,7 @@ function drawTree(data) {
   const dy = 120;
   const rectWidth = 80;
   const rectHeight = 20;
+  const spouseGap = 10;
   const tree = d3.tree()
     .nodeSize([dx, dy])
     .separation((a, b) => (a.parent === b.parent ? 2 : 3));
@@ -73,7 +92,7 @@ function drawTree(data) {
       if (d.y > bottom.y) bottom = d;
     });
 
-    const width = right.x - left.x + margin.left + margin.right + rectWidth;
+    const width = right.x - left.x + margin.left + margin.right + rectWidth * 2;
     const height = bottom.y - top.y + margin.top + margin.bottom + rectHeight;
     svg
       .attr('viewBox', [0, 0, width, height])
@@ -142,6 +161,32 @@ function drawTree(data) {
       .attr('dy', '0.31em')
       .attr('text-anchor', 'middle')
       .text(d => d.data.name);
+
+    const spouseEnter = nodeEnter.filter(d => d.data.spouse).append('g')
+      .attr('class', 'spouse')
+      .attr('transform', `translate(${rectWidth / 2 + spouseGap},0)`);
+
+    spouseEnter.append('rect')
+      .attr('x', -rectWidth / 2)
+      .attr('y', -rectHeight / 2)
+      .attr('width', rectWidth)
+      .attr('height', rectHeight)
+      .attr('fill', '#fff')
+      .attr('stroke', 'pink');
+
+    spouseEnter.append('text')
+      .attr('dy', '0.31em')
+      .attr('text-anchor', 'middle')
+      .text(d => d.data.spouse.name);
+
+    nodeEnter.filter(d => d.data.spouse).append('line')
+      .attr('class', 'spouse-link')
+      .attr('x1', rectWidth / 2)
+      .attr('y1', 0)
+      .attr('x2', rectWidth / 2 + spouseGap)
+      .attr('y2', 0)
+      .attr('stroke', '#555')
+      .attr('stroke-width', 1.5);
 
     node.merge(nodeEnter).transition().duration(250)
       .attr('transform', d => `translate(${d.x},${d.y})`);
