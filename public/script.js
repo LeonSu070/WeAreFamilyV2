@@ -160,7 +160,7 @@ function drawTree(data) {
       .attr('width', rectWidth)
       .attr('height', rectHeight)
       .attr('fill', '#fff')
-      .attr('stroke', 'steelblue');
+      .attr('stroke', d => d.data.gender === 2 ? 'pink' : 'steelblue');
 
     nodeEnter.append('text')
       .attr('dy', '0.31em')
@@ -177,7 +177,7 @@ function drawTree(data) {
       .attr('width', rectWidth)
       .attr('height', rectHeight)
       .attr('fill', '#fff')
-      .attr('stroke', 'pink');
+      .attr('stroke', d => d.data.spouse.gender === 2 ? 'pink' : 'steelblue');
 
     spouseEnter.append('text')
       .attr('dy', '0.31em')
