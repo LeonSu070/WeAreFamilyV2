@@ -89,22 +89,36 @@ function drawTree(data) {
   function update(source) {
     tree(root);
 
-    let left = root, right = root, top = root, bottom = root;
+    let left = Infinity,
+        right = -Infinity,
+        top = Infinity,
+        bottom = -Infinity;
     root.each(d => {
-      if (d.x < left.x) left = d;
-      if (d.x > right.x) right = d;
-      if (d.y < top.y) top = d;
-      if (d.y > bottom.y) bottom = d;
+      const nodeLeft = d.x - rectWidth / 2;
+      const nodeRight = d.x + rectWidth / 2;
+      left = Math.min(left, nodeLeft);
+      right = Math.max(right, nodeRight);
+      top = Math.min(top, d.y);
+      bottom = Math.max(bottom, d.y);
+      if (d.data.spouse) {
+        const spouseLeft = d.x + rectWidth + spouseGap - rectWidth / 2;
+        const spouseRight = d.x + rectWidth + spouseGap + rectWidth / 2;
+        left = Math.min(left, spouseLeft);
+        right = Math.max(right, spouseRight);
+      }
     });
 
-    const width = right.x - left.x + margin.left + margin.right + rectWidth * 2;
-    const height = bottom.y - top.y + margin.top + margin.bottom + rectHeight;
+    const rootCenter = root.x + (root.data.spouse ? (rectWidth + spouseGap) / 2 : 0);
+    const halfWidth = Math.max(rootCenter - left, right - rootCenter);
+    const width = margin.left + margin.right + 2 * halfWidth;
+    const height = bottom - top + margin.top + margin.bottom + rectHeight;
+
     svg
       .attr('viewBox', [0, 0, width, height])
       .attr('width', width)
       .attr('height', height);
 
-    const offsetX = margin.left + (width - margin.left - margin.right) / 2 - root.x;
+    const offsetX = margin.left + (width - margin.left - margin.right) / 2 - rootCenter;
     g.attr('transform', `translate(${offsetX},${margin.top})`);
 
     const nodes = root.descendants().reverse();
