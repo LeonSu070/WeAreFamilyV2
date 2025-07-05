@@ -61,7 +61,7 @@ function drawTree(data) {
   // Use a horizontal spacing that accounts for the maximum width of a
   // node with a spouse so siblings don't overlap.
   const dx = rectWidth * 2 + spouseGap + 20;
-  const dy = 120;
+  const dy = 80; // reduced vertical spacing for a more compact layout
   const tree = d3.tree()
     .nodeSize([dx, dy])
     // Keep spouses close together while ensuring siblings are spaced
