@@ -80,6 +80,14 @@ function drawTree(data) {
       return base + extra;
     });
   const diagonal = d3.linkVertical().x(d => d.x).y(d => d.y);
+  // Links should connect to the top/bottom edges of each node's rectangle
+  // rather than its centre. We'll use a helper that adjusts the y
+  // coordinate by half of the rectangle height.
+  function linkPath(d) {
+    const source = { x: d.source.x, y: d.source.y + rectHeight / 2 };
+    const target = { x: d.target.x, y: d.target.y - rectHeight / 2 };
+    return diagonal({ source, target });
+  }
 
   const root = d3.hierarchy(data);
   root.x0 = 0;
@@ -147,19 +155,19 @@ function drawTree(data) {
           .attr('fill', 'none')
           .attr('stroke-width', 1.5)
           .attr('d', () => {
-            const o = { x: source.x0, y: source.y0 };
+            const o = { x: source.x0, y: source.y0 + rectHeight / 2 };
             return diagonal({ source: o, target: o });
           })
           .transition().duration(250)
-          .attr('d', d => diagonal({ source: d.source, target: d.target })),
+          .attr('d', d => linkPath(d)),
       update => update.transition().duration(250)
-          .attr('d', d => diagonal({ source: d.source, target: d.target })),
+          .attr('d', d => linkPath(d)),
       exit => exit.transition().duration(250)
           .attr('d', () => {
-            const o = { x: source.x, y: source.y };
+            const o = { x: source.x, y: source.y + rectHeight / 2 };
             return diagonal({ source: o, target: o });
           })
-          .remove()
+          .remove(),
     );
 
     const node = g.selectAll('g.node')
