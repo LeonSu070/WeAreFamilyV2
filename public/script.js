@@ -55,18 +55,30 @@ function buildHierarchy(data) {
 
 function drawTree(data) {
   const margin = { top: 20, right: 20, bottom: 20, left: 20 };
-  const rectWidth = 120; // increased for larger nodes
-  const rectHeight = 30; // increased for larger nodes
+  const rectWidth = 120; // width of a single member node
+  const rectHeight = 30;
   const spouseGap = 10;
-  // Use a horizontal spacing that accounts for the maximum width of a
-  // node with a spouse so siblings don't overlap.
-  const dx = rectWidth * 2 + spouseGap + 20;
-  const dy = 80; // reduced vertical spacing for a more compact layout
+
+  // Base horizontal step used by the tree layout.  This roughly matches the
+  // width of a single node and a small margin so that nodes without a spouse
+  // stay close to each other.
+  const baseDx = rectWidth + 20;
+  const dy = 80; // vertical spacing between generations
+
+  // Additional spacing required when a node has a spouse box drawn next to it.
+  const spouseOffset = (rectWidth + spouseGap) / baseDx;
+
   const tree = d3.tree()
-    .nodeSize([dx, dy])
-    // Keep spouses close together while ensuring siblings are spaced
-    // apart so their boxes do not touch.
-    .separation((a, b) => (a.parent === b.parent ? 1 : 2));
+    .nodeSize([baseDx, dy])
+    // Provide a custom separation function so that nodes without a spouse do
+    // not reserve extra horizontal space. Nodes with spouses get additional
+    // spacing to fit both boxes.
+    .separation((a, b) => {
+      const base = a.parent === b.parent ? 1 : 2;
+      const extraA = a.data.spouse ? spouseOffset / 2 : 0;
+      const extraB = b.data.spouse ? spouseOffset / 2 : 0;
+      return base + extraA + extraB;
+    });
   const diagonal = d3.linkVertical().x(d => d.x).y(d => d.y);
 
   const root = d3.hierarchy(data);
