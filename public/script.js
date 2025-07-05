@@ -71,12 +71,25 @@ function drawTree(data) {
   const tree = d3.tree()
     .nodeSize([baseDx, dy])
     // Custom separation so that a node with a spouse reserves enough
-    // horizontal space for the additional box.  When either adjacent node has
-    // a spouse, we add the full spouseOffset to avoid overlap with the next
-    // sibling.
+    // horizontal space for the additional box. When determining spacing
+    // between siblings, only add the offset if the left sibling has a spouse
+    // drawn to its right. For nodes from different subtrees we fall back to
+    // the original behaviour of adding spacing when either node has a spouse.
     .separation((a, b) => {
       const base = a.parent === b.parent ? 1 : 2;
-      const extra = a.data.spouse || b.data.spouse ? spouseOffset : 0;
+      let extra = 0;
+      if (a.parent && b.parent && a.parent === b.parent) {
+        const siblings = a.parent.children;
+        const aIndex = siblings.indexOf(a);
+        const bIndex = siblings.indexOf(b);
+        if (aIndex < bIndex) {
+          extra = a.data.spouse ? spouseOffset : 0;
+        } else {
+          extra = b.data.spouse ? spouseOffset : 0;
+        }
+      } else if (a.data.spouse || b.data.spouse) {
+        extra = spouseOffset;
+      }
       return base + extra;
     });
   const diagonal = d3.linkVertical().x(d => d.x).y(d => d.y);
