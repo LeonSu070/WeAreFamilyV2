@@ -1,4 +1,4 @@
-const familyData = {
+var familyData = {
   "root": 12, 
   "members": [   
     {
@@ -2055,7 +2055,4 @@ const familyData = {
     }
   ]
 }
-
-if (typeof window !== 'undefined') {
-  window.familyData = familyData;
-}
+;
