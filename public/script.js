@@ -1,16 +1,17 @@
 let idMap;
 let currentRoot;
 
-fetch('/family')
-  .then(res => res.json())
-  .then(data => {
-    const root = buildHierarchy(data);
-    if (root) {
-      currentRoot = root;
-      drawTree(root);
-    }
-  })
-  .catch(err => console.error(err));
+// The family data is provided by familyData.js as a global variable.
+const data = window.familyData;
+if (data) {
+  const root = buildHierarchy(data);
+  if (root) {
+    currentRoot = root;
+    drawTree(root);
+  }
+} else {
+  console.error("Family data not found");
+}
 
 function buildHierarchy(data) {
   const list = data.members;

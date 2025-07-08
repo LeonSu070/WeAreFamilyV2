@@ -1,4 +1,4 @@
-{
+const familyData = {
   "root": 12, 
   "members": [   
     {
@@ -2055,3 +2055,4 @@
     }
   ]
 }
+;
