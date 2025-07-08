@@ -2055,3 +2055,7 @@ const familyData = {
     }
   ]
 }
+
+if (typeof window !== 'undefined') {
+  window.familyData = familyData;
+}

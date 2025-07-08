@@ -5,9 +5,10 @@ an organization chart.
 
 ## Run
 
-Open `public/index.html` directly in your browser. The page includes
-`familyData.js` which defines a global `familyData` variable, so no web server is required.
-The `public/familyData.js` file includes a `root` field specifying the ID of the
-family member used as the single root node of the displayed tree. Only that
-tree is rendered on the page.
+Open `index.html` directly in your browser. The page includes
+`familyData.js` which defines a global `familyData` variable (also exposed on
+`window.familyData`), so no web server is required.
+The `familyData.js` file includes a `root` field specifying the ID of the
+family member used as the single root node of the displayed tree. Only that tree
+is rendered on the page.
 
