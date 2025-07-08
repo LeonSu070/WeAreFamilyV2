@@ -147,8 +147,9 @@ function drawTree(data) {
 
     const rootCenter = root.x + (root.data.spouse ? (rectWidth + spouseGap) / 2 : 0);
     const halfWidth = Math.max(rootCenter - left, right - rootCenter);
+    const extraTop = currentRoot && currentRoot.parent_id ? rectHeight : 0;
     const width = margin.left + margin.right + 2 * halfWidth;
-    const height = bottom - top + margin.top + margin.bottom + rectHeight;
+    const height = bottom - top + margin.top + margin.bottom + rectHeight + extraTop;
 
     svg
       .attr('viewBox', [0, 0, width, height])
@@ -156,7 +157,7 @@ function drawTree(data) {
       .attr('height', height);
 
     const offsetX = margin.left + (width - margin.left - margin.right) / 2 - rootCenter;
-    g.attr('transform', `translate(${offsetX},${margin.top})`);
+    g.attr('transform', `translate(${offsetX},${margin.top + extraTop})`);
 
     const nodes = root.descendants().reverse();
     const links = root.links();
