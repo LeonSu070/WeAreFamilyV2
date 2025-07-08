@@ -5,15 +5,10 @@ an organization chart.
 
 ## Run
 
-Serve the repository using any static HTTP server. For example, run:
+Open `public/index.html` directly in your browser. The page loads
+`family.json` from the same directory, so no web server is required.
 
-```
-python3 -m http.server
-```
-
-and then open `http://localhost:8000/public/` in your browser.
-
-The `data/family.json` file now includes a `root` field specifying the ID of the
+The `public/family.json` file includes a `root` field specifying the ID of the
 family member used as the single root node of the displayed tree. Only that
 tree is rendered on the page.
 
