@@ -1,7 +1,9 @@
 let idMap;
 let currentRoot;
 
-fetch('/family')
+// The server has been removed, so load the family data directly from the
+// repository. The JSON file lives one directory above `public`.
+fetch('../data/family.json')
   .then(res => res.json())
   .then(data => {
     const root = buildHierarchy(data);
