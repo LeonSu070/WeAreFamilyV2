@@ -1,8 +1,12 @@
+let idMap;
+let currentRoot;
+
 fetch('/family')
   .then(res => res.json())
   .then(data => {
     const root = buildHierarchy(data);
     if (root) {
+      currentRoot = root;
       drawTree(root);
     }
   })
@@ -11,7 +15,7 @@ fetch('/family')
 function buildHierarchy(data) {
   const list = data.members;
   const rootId = data.root;
-  const idMap = new Map();
+  idMap = new Map();
   list.forEach(member => {
     member.name = `${member.first_name}${member.last_name}`;
     member.children = [];
@@ -247,6 +251,19 @@ function drawTree(data) {
       .attr('transform', () => `translate(${source.x},${source.y})`)
       .remove();
 
+    const iconData = currentRoot && currentRoot.parent_id ? [root] : [];
+    const icon = g.selectAll('text.up-icon').data(iconData);
+    icon.enter()
+      .append('text')
+      .attr('class', 'up-icon')
+      .attr('text-anchor', 'middle')
+      .attr('cursor', 'pointer')
+      .text('\u25B2')
+      .on('click', expandRootUp)
+      .merge(icon)
+      .attr('transform', d => `translate(${d.x},${d.y - rectHeight / 2 - 10})`);
+    icon.exit().remove();
+
     root.each(d => {
       d.x0 = d.x;
       d.y0 = d.y;
@@ -254,4 +271,14 @@ function drawTree(data) {
   }
 
   update(root);
+}
+
+function expandRootUp() {
+  if (!currentRoot) return;
+  const parent = idMap.get(currentRoot.parent_id);
+  if (!parent) return;
+  const grand = idMap.get(parent.parent_id);
+  currentRoot = grand || parent;
+  d3.select('#chart').selectAll('svg').remove();
+  drawTree(currentRoot);
 }
