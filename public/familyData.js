@@ -1,4 +1,4 @@
-const familyData = {
+var familyData = {
   "root": 12, 
   "members": [   
     {
