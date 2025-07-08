@@ -222,7 +222,12 @@ function drawTree(data) {
 
     const spouseEnter = nodeEnter.filter(d => d.data.spouse).append('g')
       .attr('class', 'spouse')
-      .attr('transform', `translate(${rectWidth + spouseGap},0)`);
+      .attr('transform', `translate(${rectWidth + spouseGap},0)`)
+      .style('cursor', 'pointer')
+      .on('click', (event, d) => {
+        event.stopPropagation();
+        expandRootFromSpouse(d.data.spouse);
+      });
 
     spouseEnter.append('rect')
       .attr('x', -rectWidth / 2)
@@ -278,6 +283,16 @@ function drawTree(data) {
 function expandRootUp() {
   if (!currentRoot) return;
   const parent = idMap.get(currentRoot.parent_id);
+  if (!parent) return;
+  const grand = idMap.get(parent.parent_id);
+  currentRoot = grand || parent;
+  d3.select('#chart').selectAll('svg').remove();
+  drawTree(currentRoot);
+}
+
+function expandRootFromSpouse(spouse) {
+  if (!spouse) return;
+  const parent = idMap.get(spouse.parent_id);
   if (!parent) return;
   const grand = idMap.get(parent.parent_id);
   currentRoot = grand || parent;
