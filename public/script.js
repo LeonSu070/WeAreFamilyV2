@@ -1,7 +1,9 @@
 let idMap;
 let currentRoot;
 
-fetch('/family')
+// Load the family data directly from a JSON file that sits next to this script.
+// The page can be opened from the file system without running a server.
+fetch('family.json')
   .then(res => res.json())
   .then(data => {
     const root = buildHierarchy(data);
