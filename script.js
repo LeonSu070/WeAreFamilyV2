@@ -1,61 +1,54 @@
+"use strict";
 let idMap;
 let currentRoot;
 
-// The family data is provided by familyData.js as a global variable.
-const data = window.familyData;
-if (data) {
-  const root = buildHierarchy(data);
-  if (root) {
-    currentRoot = root;
-    drawTree(root);
+(function init() {
+  // The family data is provided by familyData.js as a global variable.
+  const data = window.familyData;
+  if (data) {
+    const root = buildHierarchy(data);
+    if (root) {
+      currentRoot = root;
+      drawTree(root);
+    }
+  } else {
+    console.error("Family data not found");
   }
-} else {
-  console.error("Family data not found");
-}
+})();
 
 function buildHierarchy(data) {
   const list = data.members;
-  const rootId = data.root;
   idMap = new Map();
-  list.forEach(member => {
+
+  for (const member of list) {
     member.name = `${member.first_name}${member.last_name}`;
     member.children = [];
     idMap.set(member.id, member);
-  });
+  }
 
-  list.forEach(member => {
-    if (member.parent_id && idMap.has(member.parent_id)) {
-      idMap.get(member.parent_id).children.push(member);
-    }
-  });
+  for (const member of list) {
+    const parent = idMap.get(member.parent_id);
+    if (parent) parent.children.push(member);
 
-  // link spouses and share children
-  list.forEach(member => {
     if (member.spouse_id && idMap.has(member.spouse_id)) {
       member.spouse = idMap.get(member.spouse_id);
     }
-  });
+  }
 
-  list.forEach(member => {
+  for (const member of list) {
     if (member.spouse) {
       const combined = Array.from(new Set([
-        ...(member.children || []),
-        ...(member.spouse.children || [])
+        ...member.children,
+        ...member.spouse.children,
       ]));
-      member.children = combined;
-      member.spouse.children = combined;
+      member.children = member.spouse.children = combined;
     }
-  });
-
-  const rootMember = idMap.get(rootId);
-
-  list.forEach(member => {
     if (member.children.length === 0) {
       delete member.children;
     }
-  });
+  }
 
-  return rootMember;
+  return idMap.get(data.root);
 }
 
 function drawTree(data) {
