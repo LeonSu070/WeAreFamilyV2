@@ -122,7 +122,18 @@ function drawTree(data) {
     .style('user-select', 'none')
     .style('margin-bottom', '20px');
 
-  const g = svg.append('g');
+  // Wrap the actual drawing group in a zoom layer so zooming doesn't
+  // interfere with the layout transforms applied by update()
+  const zoomLayer = svg.append('g');
+  const g = zoomLayer.append('g');
+
+  // Enable wheel/pinch zooming
+  const zoom = d3.zoom()
+    .scaleExtent([0.5, 2])
+    .on('zoom', (event) => {
+      zoomLayer.attr('transform', event.transform);
+    });
+  svg.call(zoom);
 
   function update(source) {
     tree(root);
