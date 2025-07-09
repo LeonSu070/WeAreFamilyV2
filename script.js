@@ -60,8 +60,8 @@ function buildHierarchy(data) {
 
 function drawTree(data) {
   const margin = { top: 20, right: 20, bottom: 20, left: 20 };
-  const rectWidth = 120; // width of a single member node
-  const rectHeight = 30;
+  const rectWidth = 150; // width of a single member node
+  const rectHeight = 40;
   const spouseGap = 10;
 
   // Base horizontal step used by the tree layout.  This roughly matches the
@@ -69,7 +69,7 @@ function drawTree(data) {
   // stay close to each other.
   // Use a slightly smaller horizontal step so the tree appears more compact.
   const baseDx = rectWidth + 10;
-  const dy = 80; // vertical spacing between generations
+  const dy = 100; // vertical spacing between generations
 
   // Additional spacing required when a node has a spouse box drawn next to it.
   const spouseOffset = (rectWidth + spouseGap) / baseDx;
@@ -119,7 +119,7 @@ function drawTree(data) {
 
   const svg = d3.select('#chart').append('svg')
     // slightly larger font to match bigger nodes
-    .style('font', '14px sans-serif')
+    .style('font', '16px sans-serif')
     .style('user-select', 'none')
     .style('margin-bottom', '20px');
 
@@ -160,7 +160,7 @@ function drawTree(data) {
 
     const rootCenter = root.x + (root.data.spouse ? (rectWidth + spouseGap) / 2 : 0);
     const halfWidth = Math.max(rootCenter - left, right - rootCenter);
-    const extraTop = currentRoot && currentRoot.parent_id ? rectHeight : 0;
+    const extraTop = currentRoot && currentRoot.parent_id ? 10 : 0;
     const width = margin.left + margin.right + 2 * halfWidth;
     const height = bottom - top + margin.top + margin.bottom + rectHeight + extraTop;
 
