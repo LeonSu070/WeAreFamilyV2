@@ -19,8 +19,13 @@
       overflow: visible;
       width: fit-content;
     }
-    /* Disable browser gestures that interfere with pinch zoom */
-    #chart svg { touch-action: none; }
+    /* Disable browser gestures that interfere with pinch zoom and
+       keep the SVG the same size as the browser viewport */
+    #chart svg {
+      touch-action: none;
+      height: 100vh;
+      width: 100vw;
+    }
     .link { fill: none; stroke: #ccc; stroke-width: 2px; }
   </style>
 </head>
