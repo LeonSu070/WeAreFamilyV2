@@ -3,6 +3,17 @@ let currentRoot;
 
 // The family data is provided by familyData.js as a global variable.
 const data = window.familyData;
+// Allow overriding the root member via a `root_id` query parameter
+if (data) {
+  const params = new URLSearchParams(window.location.search);
+  const paramRoot = params.get('root_id');
+  if (paramRoot !== null) {
+    const parsed = parseInt(paramRoot, 10);
+    if (!Number.isNaN(parsed)) {
+      data.root = parsed;
+    }
+  }
+}
 if (data) {
   const root = buildHierarchy(data);
   if (root) {
