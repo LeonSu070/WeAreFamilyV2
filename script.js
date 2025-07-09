@@ -59,7 +59,7 @@ function buildHierarchy(data) {
 }
 
 function drawTree(data) {
-  const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+  const margin = { top: 40, right: 20, bottom: 20, left: 20 };
   const rectWidth = 150; // width of a single member node
   const rectHeight = 40;
   const spouseGap = 10;
