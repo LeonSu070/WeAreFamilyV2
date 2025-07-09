@@ -117,11 +117,20 @@ function drawTree(data) {
     d._children = d.children;
   });
 
+  const viewWidth = window.innerWidth;
+  const viewHeight = window.innerHeight;
+
   const svg = d3.select('#chart').append('svg')
     // slightly larger font to match bigger nodes
     .style('font', '16px sans-serif')
     .style('user-select', 'none')
-    .style('margin-bottom', '20px');
+    .style('margin-bottom', '20px')
+    .attr('viewBox', [0, 0, viewWidth, viewHeight])
+    .attr('width', viewWidth)
+    .attr('height', viewHeight)
+    // Keep the SVG the same size as the viewport
+    .style('height', '100vh')
+    .style('width', '100vw');
 
   // Wrap the actual drawing group in a zoom layer so zooming doesn't
   // interfere with the layout transforms applied by update()
@@ -139,40 +148,10 @@ function drawTree(data) {
   function update(source) {
     tree(root);
 
-    let left = Infinity,
-        right = -Infinity,
-        top = Infinity,
-        bottom = -Infinity;
-    root.each(d => {
-      const nodeLeft = d.x - rectWidth / 2;
-      const nodeRight = d.x + rectWidth / 2;
-      left = Math.min(left, nodeLeft);
-      right = Math.max(right, nodeRight);
-      top = Math.min(top, d.y);
-      bottom = Math.max(bottom, d.y);
-      if (d.data.spouse) {
-        const spouseLeft = d.x + rectWidth + spouseGap - rectWidth / 2;
-        const spouseRight = d.x + rectWidth + spouseGap + rectWidth / 2;
-        left = Math.min(left, spouseLeft);
-        right = Math.max(right, spouseRight);
-      }
-    });
-
     const rootCenter = root.x + (root.data.spouse ? (rectWidth + spouseGap) / 2 : 0);
-    const halfWidth = Math.max(rootCenter - left, right - rootCenter);
     const extraTop = currentRoot && currentRoot.parent_id ? 10 : 0;
-    const width = margin.left + margin.right + 2 * halfWidth;
-    const height = bottom - top + margin.top + margin.bottom + rectHeight + extraTop;
 
-    svg
-      .attr('viewBox', [0, 0, width, height])
-      .attr('width', width)
-      .attr('height', height)
-      // Keep the SVG the same size as the viewport
-      .style('height', '100vh')
-      .style('width', '100vw');
-
-    const offsetX = margin.left + (width - margin.left - margin.right) / 2 - rootCenter;
+    const offsetX = viewWidth / 2 - rootCenter;
     g.attr('transform', `translate(${offsetX},${margin.top + extraTop})`);
 
     const nodes = root.descendants().reverse();
