@@ -71,6 +71,10 @@ function drawTree(data) {
   const baseDx = rectWidth + 10;
   const dy = 100; // vertical spacing between generations
 
+  // Scale factors to make the overall tree appear taller and narrower
+  const scaleX = 0.6;
+  const scaleY = 1.2;
+
   // Additional spacing required when a node has a spouse box drawn next to it.
   const spouseOffset = (rectWidth + spouseGap) / baseDx;
 
@@ -147,6 +151,12 @@ function drawTree(data) {
 
   function update(source) {
     tree(root);
+
+    // Compress the tree horizontally and stretch it vertically
+    root.each(d => {
+      d.x *= scaleX;
+      d.y *= scaleY;
+    });
 
     const rootCenter = root.x + (root.data.spouse ? (rectWidth + spouseGap) / 2 : 0);
     const extraTop = currentRoot && currentRoot.parent_id ? 10 : 0;
