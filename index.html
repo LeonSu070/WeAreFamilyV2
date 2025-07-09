@@ -6,12 +6,21 @@
   <title>Family Tree</title>
   <script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js"></script>
   <style>
-    body { font-family: sans-serif; }
-    #chart {
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      /* Allow the page itself to scroll horizontally so the scrollbar sits at
+         the bottom of the window */
       overflow-x: auto;
-      overflow-y: hidden;
-      width: 100%;
     }
+    #chart {
+      /* Let the chart grow wider than the viewport and rely on the body for
+         scrolling */
+      overflow: visible;
+      width: fit-content;
+    }
+    /* Disable browser gestures that interfere with pinch zoom */
+    #chart svg { touch-action: none; }
     .link { fill: none; stroke: #ccc; stroke-width: 2px; }
   </style>
 </head>
