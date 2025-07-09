@@ -67,7 +67,8 @@ function drawTree(data) {
   // Base horizontal step used by the tree layout.  This roughly matches the
   // width of a single node and a small margin so that nodes without a spouse
   // stay close to each other.
-  const baseDx = rectWidth + 20;
+  // Use a slightly smaller horizontal step so the tree appears more compact.
+  const baseDx = rectWidth + 10;
   const dy = 80; // vertical spacing between generations
 
   // Additional spacing required when a node has a spouse box drawn next to it.
