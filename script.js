@@ -117,8 +117,8 @@ function drawTree(data) {
     d._children = d.children;
   });
 
-  const viewWidth = window.innerWidth;
-  const viewHeight = window.innerHeight;
+  const viewWidth = window.innerWidth * 0.6;
+  const viewHeight = window.innerHeight * 1.2;
 
   const svg = d3.select('#chart').append('svg')
     // slightly larger font to match bigger nodes
@@ -128,9 +128,9 @@ function drawTree(data) {
     .attr('viewBox', [0, 0, viewWidth, viewHeight])
     .attr('width', viewWidth)
     .attr('height', viewHeight)
-    // Keep the SVG the same size as the viewport
-    .style('height', '100vh')
-    .style('width', '100vw');
+    // Keep the SVG dimensions consistent with the CSS sizing
+    .style('height', '120vh')
+    .style('width', '60vw');
 
   // Wrap the actual drawing group in a zoom layer so zooming doesn't
   // interfere with the layout transforms applied by update()
