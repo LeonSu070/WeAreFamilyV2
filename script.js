@@ -71,10 +71,6 @@ function drawTree(data) {
   const baseDx = rectWidth + 10;
   const dy = 100; // vertical spacing between generations
 
-  // Scale factors to make the overall tree appear taller and narrower
-  const scaleX = 0.6;
-  const scaleY = 1.2;
-
   // Additional spacing required when a node has a spouse box drawn next to it.
   const spouseOffset = (rectWidth + spouseGap) / baseDx;
 
@@ -121,8 +117,8 @@ function drawTree(data) {
     d._children = d.children;
   });
 
-  const viewWidth = window.innerWidth * 0.6;
-  const viewHeight = window.innerHeight * 1.2;
+  const viewWidth = window.innerWidth;
+  const viewHeight = window.innerHeight;
 
   const svg = d3.select('#chart').append('svg')
     // slightly larger font to match bigger nodes
@@ -132,9 +128,9 @@ function drawTree(data) {
     .attr('viewBox', [0, 0, viewWidth, viewHeight])
     .attr('width', viewWidth)
     .attr('height', viewHeight)
-    // Keep the SVG dimensions consistent with the CSS sizing
-    .style('height', '120vh')
-    .style('width', '60vw');
+    // Keep the SVG the same size as the viewport
+    .style('height', '100vh')
+    .style('width', '100vw');
 
   // Wrap the actual drawing group in a zoom layer so zooming doesn't
   // interfere with the layout transforms applied by update()
@@ -151,12 +147,6 @@ function drawTree(data) {
 
   function update(source) {
     tree(root);
-
-    // Compress the tree horizontally and stretch it vertically
-    root.each(d => {
-      d.x *= scaleX;
-      d.y *= scaleY;
-    });
 
     const rootCenter = root.x + (root.data.spouse ? (rectWidth + spouseGap) / 2 : 0);
     const extraTop = currentRoot && currentRoot.parent_id ? 10 : 0;
