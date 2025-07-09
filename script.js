@@ -166,7 +166,10 @@ function drawTree(data) {
     svg
       .attr('viewBox', [0, 0, width, height])
       .attr('width', width)
-      .attr('height', height);
+      .attr('height', height)
+      // Keep the SVG the same size as the viewport
+      .style('height', '100vh')
+      .style('width', '100vw');
 
     const offsetX = margin.left + (width - margin.left - margin.right) / 2 - rootCenter;
     g.attr('transform', `translate(${offsetX},${margin.top + extraTop})`);
