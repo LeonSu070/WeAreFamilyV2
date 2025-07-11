@@ -391,7 +391,7 @@ var familyData = {
       "first_name": "苏",
       "last_name": "杰",
       "parent_id": 31,
-      "spouse_id": 0,
+      "spouse_id": 34,
       "gender": 1,
       "portrait": "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg",
       "birthday_time": null,
@@ -403,7 +403,7 @@ var familyData = {
       "first_name": "李",
       "last_name": "芳",
       "parent_id": null,
-      "spouse_id": 0,
+      "spouse_id": 31,
       "gender": 2,
       "portrait": "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg",
       "birthday_time": null,
@@ -439,7 +439,7 @@ var familyData = {
       "first_name": "苏",
       "last_name": "巧书",
       "parent_id": 12,
-      "spouse_id": 0,
+      "spouse_id": 219,
       "gender": 2,
       "portrait": "",
       "birthday_time": "0000-00-00",
@@ -451,7 +451,7 @@ var familyData = {
       "first_name": "苏",
       "last_name": "书银",
       "parent_id": 12,
-      "spouse_id": 0,
+      "spouse_id": 230,
       "gender": 2,
       "portrait": "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg",
       "birthday_time": null,
@@ -573,18 +573,6 @@ var familyData = {
       "parent_id": 19,
       "spouse_id": 0,
       "gender": 2,
-      "portrait": "",
-      "birthday_time": "0000-00-00",
-      "memorialday_time": "0000-00-00"
-    },
-    {
-      "id": 88,
-      "phonenumber": "N3545636765",
-      "first_name": "赵",
-      "last_name": "二",
-      "parent_id": 19,
-      "spouse_id": 0,
-      "gender": 1,
       "portrait": "",
       "birthday_time": "0000-00-00",
       "memorialday_time": "0000-00-00"
@@ -847,7 +835,7 @@ var familyData = {
       "first_name": "孟",
       "last_name": "庆禄",
       "parent_id": 40,
-      "spouse_id": 0,
+      "spouse_id": 233,
       "gender": 1,
       "portrait": "",
       "birthday_time": "0000-00-00",
@@ -1039,7 +1027,7 @@ var familyData = {
       "first_name": "代",
       "last_name": "信英",
       "parent_id": 122,
-      "spouse_id": 0,
+      "spouse_id": 235,
       "gender": 2,
       "portrait": "",
       "birthday_time": "0000-00-00",
@@ -1051,7 +1039,7 @@ var familyData = {
       "first_name": "代",
       "last_name": "信雁",
       "parent_id": 122,
-      "spouse_id": 0,
+      "spouse_id": 236,
       "gender": 2,
       "portrait": "",
       "birthday_time": "0000-00-00",
@@ -1063,7 +1051,7 @@ var familyData = {
       "first_name": "代",
       "last_name": "换英",
       "parent_id": 122,
-      "spouse_id": 0,
+      "spouse_id": 237,
       "gender": 2,
       "portrait": "",
       "birthday_time": "0000-00-00",
@@ -1087,7 +1075,7 @@ var familyData = {
       "first_name": "代",
       "last_name": "翠英",
       "parent_id": 123,
-      "spouse_id": 0,
+      "spouse_id": 238,
       "gender": 2,
       "portrait": "",
       "birthday_time": "0000-00-00",
@@ -1111,7 +1099,7 @@ var familyData = {
       "first_name": "代",
       "last_name": "路英",
       "parent_id": 121,
-      "spouse_id": 0,
+      "spouse_id": 234,
       "gender": 2,
       "portrait": "",
       "birthday_time": "0000-00-00",
@@ -1295,30 +1283,6 @@ var familyData = {
       "gender": 1,
       "portrait": "",
       "birthday_time": "2011-04-16",
-      "memorialday_time": "0000-00-00"
-    },
-    {
-      "id": 149,
-      "phonenumber": "N1593487140",
-      "first_name": "代",
-      "last_name": "一飞",
-      "parent_id": 144,
-      "spouse_id": 0,
-      "gender": 2,
-      "portrait": "",
-      "birthday_time": "2020-05-03",
-      "memorialday_time": "0000-00-00"
-    },
-    {
-      "id": 150,
-      "phonenumber": "N1593487305",
-      "first_name": "代",
-      "last_name": "浩",
-      "parent_id": 144,
-      "spouse_id": 0,
-      "gender": 1,
-      "portrait": "",
-      "birthday_time": "0000-00-00",
       "memorialday_time": "0000-00-00"
     },
     {
@@ -2052,7 +2016,195 @@ var familyData = {
       "portrait": "",
       "birthday_time": "0000-00-00",
       "memorialday_time": "0000-00-00"
-    }
+    },
+    {
+      "id": 219,
+      "phonenumber": "N8390776655",
+      "first_name": "郝",
+      "last_name": "俊州",
+      "parent_id": 0,
+      "spouse_id": 37,
+      "gender": 1,
+      "portrait": "",
+      "birthday_time": "0000-00-00",
+      "memorialday_time": "0000-00-00"
+    },
+    {
+      "id": 220,
+      "phonenumber": "N8390776656",
+      "first_name": "郝",
+      "last_name": "现格",
+      "parent_id": 219,
+      "spouse_id": 0,
+      "gender": 1,
+      "portrait": "",
+      "birthday_time": "0000-00-00",
+      "memorialday_time": "0000-00-00"
+    },
+    {
+      "id": 221,
+      "phonenumber": "N8390776657",
+      "first_name": "郝",
+      "last_name": "现青",
+      "parent_id": 219,
+      "spouse_id": 0,
+      "gender": 1,
+      "portrait": "",
+      "birthday_time": "0000-00-00",
+      "memorialday_time": "0000-00-00"
+    },
+    {
+      "id": 222,
+      "phonenumber": "N8390776658",
+      "first_name": "郝",
+      "last_name": "现文",
+      "parent_id": 219,
+      "spouse_id": 0,
+      "gender": 1,
+      "portrait": "",
+      "birthday_time": "0000-00-00",
+      "memorialday_time": "0000-00-00"
+    },
+    {
+      "id": 223,
+      "phonenumber": "N8390776659",
+      "first_name": "郝",
+      "last_name": "小喆",
+      "parent_id": 222,
+      "spouse_id": 0,
+      "gender": 1,
+      "portrait": "",
+      "birthday_time": "0000-00-00",
+      "memorialday_time": "0000-00-00"
+    },
+    {
+      "id": 224,
+      "phonenumber": "N8390776660",
+      "first_name": "郝",
+      "last_name": "小宽",
+      "parent_id": 222,
+      "spouse_id": 0,
+      "gender": 1,
+      "portrait": "",
+      "birthday_time": "0000-00-00",
+      "memorialday_time": "0000-00-00"
+    },
+    {
+      "id": 225,
+      "phonenumber": "N8390776661",
+      "first_name": "崔",
+      "last_name": "晨希",
+      "parent_id": 21,
+      "spouse_id": 0,
+      "gender": 2,
+      "portrait": "",
+      "birthday_time": null,
+      "memorialday_time": null
+    },
+    {
+      "id": 226,
+      "first_name": "崔",
+      "last_name": "沐希",
+      "parent_id": 21,
+      "spouse_id": 0,
+      "gender": 2
+    },
+    {
+      "id": 227,
+      "first_name": "崔",
+      "last_name": "沐泽",
+      "parent_id": 21,
+      "spouse_id": 0,
+      "gender": 1
+    },
+    {
+      "id": 228,
+      "first_name": "赵",
+      "last_name": "通",
+      "parent_id": 19,
+      "spouse_id": 0,
+      "gender": 1
+    },
+    {
+      "id": 229,
+      "first_name": "赵",
+      "last_name": "苏皓",
+      "parent_id": 19,
+      "spouse_id": 0,
+      "gender": 2
+    },
+    {
+      "id": 230,
+      "first_name": "程",
+      "last_name": "xx",
+      "parent_id": 0,
+      "spouse_id": 38,
+      "gender": 1
+    },
+    {
+      "id": 231,
+      "first_name": "程",
+      "last_name": "小军",
+      "parent_id": 230,
+      "spouse_id": 0,
+      "gender": 1
+    },
+    {
+      "id": 232,
+      "first_name": "程",
+      "last_name": "小娟",
+      "parent_id": 230,
+      "spouse_id": 0,
+      "gender": 2
+    },
+    {
+      "id": 233,
+      "first_name": "",
+      "last_name": "雪飘",
+      "parent_id": 0,
+      "spouse_id": 110,
+      "gender": 2
+    },
+    {
+      "id": 234,
+      "first_name": "",
+      "last_name": "燕斌",
+      "parent_id": 0,
+      "spouse_id": 133,
+      "gender": 1
+    },
+    {
+      "id": 235,
+      "first_name": "赵",
+      "last_name": "建峰",
+      "parent_id": 0,
+      "spouse_id": 127,
+      "gender": 1
+    },
+    {
+      "id": 236,
+      "first_name": "",
+      "last_name": "树峰",
+      "parent_id": 0,
+      "spouse_id": 128,
+      "gender": 1
+    },
+    {
+      "id": 237,
+      "first_name": "",
+      "last_name": "小亭",
+      "parent_id": 0,
+      "spouse_id": 129,
+      "gender": 1
+    },
+    {
+      "id": 238,
+      "first_name": "",
+      "last_name": "建科",
+      "parent_id": 0,
+      "spouse_id": 131,
+      "gender": 1
+    },
   ]
 }
 ;
