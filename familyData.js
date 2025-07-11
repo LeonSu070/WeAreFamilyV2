@@ -847,7 +847,7 @@ var familyData = {
       "first_name": "孟",
       "last_name": "思",
       "parent_id": 40,
-      "spouse_id": 0,
+      "spouse_id": 239,
       "gender": 2,
       "portrait": "",
       "birthday_time": "0000-00-00",
@@ -2203,6 +2203,14 @@ var familyData = {
       "last_name": "建科",
       "parent_id": 0,
       "spouse_id": 131,
+      "gender": 1
+    },
+    {
+      "id": 239,
+      "first_name": "连",
+      "last_name": "亚飞",
+      "parent_id": 0,
+      "spouse_id": 111,
       "gender": 1
     },
   ]
