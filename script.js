@@ -314,8 +314,7 @@ function expandRootUp() {
   if (!currentRoot) return;
   const parent = idMap.get(currentRoot.parent_id);
   if (!parent) return;
-  const grand = idMap.get(parent.parent_id);
-  currentRoot = grand || parent;
+  currentRoot = parent;
   d3.select('#chart').selectAll('svg').remove();
   drawTree(currentRoot);
 }
