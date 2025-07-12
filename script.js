@@ -1,5 +1,7 @@
+const CLICK_DELAY = 250; // ms delay for distinguishing single vs double click
 let idMap;
 let currentRoot;
+let clickTimer = null;
 
 // The family data is provided by familyData.js as a global variable.
 const data = window.familyData;
@@ -202,16 +204,20 @@ function drawTree(data) {
       .attr('transform', () => `translate(${source.x0},${source.y0})`)
       .style('cursor', 'pointer')
       .on('click', (event, d) => {
-        if (d.children) {
-          d._children = d.children;
-          d.children = null;
-        } else {
-          d.children = d._children;
-          d._children = null;
-        }
-        update(d);
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => {
+          if (d.children) {
+            d._children = d.children;
+            d.children = null;
+          } else {
+            d.children = d._children;
+            d._children = null;
+          }
+          update(d);
+        }, CLICK_DELAY);
       })
       .on('dblclick', (event, d) => {
+        clearTimeout(clickTimer);
         event.stopPropagation();
         reloadWithRootId(d.data.id);
       });
@@ -235,16 +241,20 @@ function drawTree(data) {
       .style('cursor', 'pointer')
       .on('click', (event, d) => {
         event.stopPropagation();
-        if (d.children) {
-          d._children = d.children;
-          d.children = null;
-        } else {
-          d.children = d._children;
-          d._children = null;
-        }
-        update(d);
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => {
+          if (d.children) {
+            d._children = d.children;
+            d.children = null;
+          } else {
+            d.children = d._children;
+            d._children = null;
+          }
+          update(d);
+        }, CLICK_DELAY);
       })
       .on('dblclick', (event, d) => {
+        clearTimeout(clickTimer);
         event.stopPropagation();
         reloadWithRootId(d.data.spouse.id);
       });
