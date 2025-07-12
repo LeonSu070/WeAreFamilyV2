@@ -210,6 +210,10 @@ function drawTree(data) {
           d._children = null;
         }
         update(d);
+      })
+      .on('dblclick', (event, d) => {
+        event.stopPropagation();
+        reloadWithRootId(d.data.id);
       });
 
     nodeEnter.append('rect')
@@ -231,7 +235,18 @@ function drawTree(data) {
       .style('cursor', 'pointer')
       .on('click', (event, d) => {
         event.stopPropagation();
-        expandRootFromSpouse(d.data.spouse);
+        if (d.children) {
+          d._children = d.children;
+          d.children = null;
+        } else {
+          d.children = d._children;
+          d._children = null;
+        }
+        update(d);
+      })
+      .on('dblclick', (event, d) => {
+        event.stopPropagation();
+        reloadWithRootId(d.data.spouse.id);
       });
 
     spouseEnter.append('rect')
@@ -302,4 +317,10 @@ function expandRootFromSpouse(spouse) {
   currentRoot = grand || parent || spouse;
   d3.select('#chart').selectAll('svg').remove();
   drawTree(currentRoot);
+}
+
+function reloadWithRootId(id) {
+  const params = new URLSearchParams(window.location.search);
+  params.set('root_id', id);
+  window.location.search = `?${params.toString()}`;
 }
