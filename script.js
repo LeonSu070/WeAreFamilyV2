@@ -1,25 +1,47 @@
 const CLICK_DELAY = 250; // ms delay for distinguishing single vs double click
+const TAP_MAX_DURATION = 500; // max touch duration to consider as a tap
 let idMap;
 let currentRoot;
 let clickTimer = null;
 let lastTouchTime = 0;
 
 function handleTouch(event, single, dbl) {
-  event.preventDefault();
-  event.stopPropagation();
-  const now = Date.now();
-  if (now - lastTouchTime <= CLICK_DELAY) {
-    clearTimeout(clickTimer);
-    lastTouchTime = 0;
-    dbl();
-  } else {
-    clearTimeout(clickTimer);
-    lastTouchTime = now;
-    clickTimer = setTimeout(() => {
-      single();
+  const start = Date.now();
+  const { clientX: startX, clientY: startY } = event.touches[0];
+  const target = event.currentTarget;
+
+  const endHandler = (e) => {
+    target.removeEventListener('touchend', endHandler);
+    target.removeEventListener('touchcancel', endHandler);
+
+    const duration = Date.now() - start;
+    const moveX = e.changedTouches[0].clientX - startX;
+    const moveY = e.changedTouches[0].clientY - startY;
+    const moved = Math.hypot(moveX, moveY) > 10;
+    if (duration > TAP_MAX_DURATION || moved) {
+      return;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const now = Date.now();
+    if (now - lastTouchTime <= CLICK_DELAY) {
+      clearTimeout(clickTimer);
       lastTouchTime = 0;
-    }, CLICK_DELAY);
-  }
+      dbl();
+    } else {
+      clearTimeout(clickTimer);
+      lastTouchTime = now;
+      clickTimer = setTimeout(() => {
+        single();
+        lastTouchTime = 0;
+      }, CLICK_DELAY);
+    }
+  };
+
+  target.addEventListener('touchend', endHandler, { once: true });
+  target.addEventListener('touchcancel', endHandler, { once: true });
 }
 
 // The family data is provided by familyData.js as a global variable.
