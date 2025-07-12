@@ -2,6 +2,25 @@ const CLICK_DELAY = 250; // ms delay for distinguishing single vs double click
 let idMap;
 let currentRoot;
 let clickTimer = null;
+let lastTouchTime = 0;
+
+function handleTouch(event, single, dbl) {
+  event.preventDefault();
+  event.stopPropagation();
+  const now = Date.now();
+  if (now - lastTouchTime <= CLICK_DELAY) {
+    clearTimeout(clickTimer);
+    lastTouchTime = 0;
+    dbl();
+  } else {
+    clearTimeout(clickTimer);
+    lastTouchTime = now;
+    clickTimer = setTimeout(() => {
+      single();
+      lastTouchTime = 0;
+    }, CLICK_DELAY);
+  }
+}
 
 // The family data is provided by familyData.js as a global variable.
 const data = window.familyData;
@@ -203,6 +222,20 @@ function drawTree(data) {
       .attr('class', 'node')
       .attr('transform', () => `translate(${source.x0},${source.y0})`)
       .style('cursor', 'pointer')
+      .on('touchstart', (event, d) => {
+        handleTouch(event, () => {
+          if (d.children) {
+            d._children = d.children;
+            d.children = null;
+          } else {
+            d.children = d._children;
+            d._children = null;
+          }
+          update(d);
+        }, () => {
+          reloadWithRootId(d.data.id);
+        });
+      })
       .on('click', (event, d) => {
         clearTimeout(clickTimer);
         clickTimer = setTimeout(() => {
@@ -239,6 +272,20 @@ function drawTree(data) {
       .attr('class', 'spouse')
       .attr('transform', `translate(${rectWidth + spouseGap},0)`)
       .style('cursor', 'pointer')
+      .on('touchstart', (event, d) => {
+        handleTouch(event, () => {
+          if (d.children) {
+            d._children = d.children;
+            d.children = null;
+          } else {
+            d.children = d._children;
+            d._children = null;
+          }
+          update(d);
+        }, () => {
+          reloadWithRootId(d.data.spouse.id);
+        });
+      })
       .on('click', (event, d) => {
         event.stopPropagation();
         clearTimeout(clickTimer);

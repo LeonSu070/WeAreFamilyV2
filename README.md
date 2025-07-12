@@ -14,7 +14,7 @@ tree is rendered on the page.
 ## Interactions
 
 - **Single click** a member or spouse to toggle display of their children.
-- **Double click** a member or spouse to reload the tree using that person as the new root.
+- **Double click** (or double tap on touch screens) a member or spouse to reload the tree using that person as the new root.
 - **Click the up arrow** above the root node to reload the tree using its parent when available.
 - Single-click actions wait a short delay so that a double click will cancel them.
 
