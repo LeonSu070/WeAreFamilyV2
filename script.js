@@ -7,19 +7,29 @@ let lastTouchTime = 0;
 function handleTouch(event, single, dbl) {
   event.preventDefault();
   event.stopPropagation();
-  const now = Date.now();
-  if (now - lastTouchTime <= CLICK_DELAY) {
-    clearTimeout(clickTimer);
-    lastTouchTime = 0;
-    dbl();
-  } else {
-    clearTimeout(clickTimer);
-    lastTouchTime = now;
-    clickTimer = setTimeout(() => {
-      single();
+
+  const target = event.currentTarget;
+
+  const endHandler = () => {
+    target.removeEventListener('touchend', endHandler);
+    target.removeEventListener('touchcancel', endHandler);
+    const now = Date.now();
+    if (now - lastTouchTime <= CLICK_DELAY) {
+      clearTimeout(clickTimer);
       lastTouchTime = 0;
-    }, CLICK_DELAY);
-  }
+      dbl();
+    } else {
+      clearTimeout(clickTimer);
+      lastTouchTime = now;
+      clickTimer = setTimeout(() => {
+        single();
+        lastTouchTime = 0;
+      }, CLICK_DELAY);
+    }
+  };
+
+  target.addEventListener('touchend', endHandler, { once: true });
+  target.addEventListener('touchcancel', endHandler, { once: true });
 }
 
 // The family data is provided by familyData.js as a global variable.
