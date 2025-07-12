@@ -17,7 +17,8 @@ tree is rendered on the page.
 - **Double click** (or double tap on touch screens) a member or spouse to reload the tree using that person as the new root.
 - **Click the up arrow** above the root node to reload the tree using its parent when available.
 - Single-click actions wait a short delay so that a double click will cancel them.
-- On touch screens, a tap only registers once your finger lifts; holding a touch without releasing does nothing.
+- On touch screens, a tap only registers if your finger lifts quickly.
+  Holding for more than half a second counts as a drag gesture instead of a tap.
 
 ## Customizing Data
 
